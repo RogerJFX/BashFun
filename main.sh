@@ -8,4 +8,6 @@ echo $(Math avg 1.1 2.2 3.3)
 
 echo $(Math fact 32)
 
-echo $(Math fib 17)
+time echo $(Math fibFun 18)
+
+time echo $(Math fib 3000)
