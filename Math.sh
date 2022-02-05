@@ -5,7 +5,7 @@ export BC_LINE_LENGTH=0
 
 function Math() {
 	
-	function output() {
+	function calc() {
 		echo $1 | bc -l
 	}
 	
@@ -14,11 +14,11 @@ function Math() {
 		for var in "$@" ; do
 			term="$term+$var"
 		done
-		echo $(output $term)
+		echo $(calc $term)
 	}
 	
 	function average() {
-		echo $(output "$(sum $@)/$#")
+		echo $(calc "$(sum $@)/$#")
 	}
 	
 	function factorial() {
@@ -26,7 +26,7 @@ function Math() {
 		for ((i = 2; i <= $1; i++)) ; do
 			term="$term*$i"
 		done
-		echo $(output $term)
+		echo $(calc $term)
 	}
 	
 	# a bit slow then... - but fun
@@ -37,7 +37,7 @@ function Math() {
 		else 
 			a=$(($num-1))
 			b=$(($num-2))
-			echo $(output "$(fibonacciRec $a) + $(fibonacciRec $b)")
+			echo $(calc "$(fibonacciRec $a) + $(fibonacciRec $b)")
 		fi
 	}
 	
@@ -46,10 +46,10 @@ function Math() {
 		local low=0
 		local high=1
 		for ((i = $1; i > 1; i--)) ; do
-			high=$(output "$high+$low")
-			low=$(output "$high-$low")
+			high=$(calc "$high+$low")
+			low=$(calc "$high-$low")
 		done
-		echo $(output $high)
+		echo $(calc $high)
 	}
 	
 	function notImplemented() {
