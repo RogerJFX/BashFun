@@ -52,6 +52,42 @@ function Math() {
 		echo $(calc $high)
 	}
 	
+	function geoDistance() {
+		local pi180=0.01745329251994329576
+		local R=6371
+		local dLatTerm="($3-($1))*$pi180"
+		local dLonTerm="($4-($2))*$pi180"
+		local lat1Term="$1*$pi180"
+		local lat2Term="$3*$pi180"
+		local aTerm="s($dLatTerm/2)*s($dLatTerm/2)+c($lat1Term)*c($lat2Term)*s($dLonTerm/2)*s($dLonTerm/2)"
+		local atan=$(atan2 "sqrt($aTerm)" "sqrt(1-$aTerm)")
+		echo $(calc "$atan*$R*2")
+	}
+	
+	function atan2() {
+		local x=$1
+		local y=$2
+		{ read result; } < <(
+			bc -l <<END
+				result = 0 /* if $x == 0 AND $y == 0 */
+				pi = (4*a(1/5) - a(1/239))*4
+				if ($y == 0) {
+					if($x != 0) {
+						result = pi / 2
+					}
+				}
+				if ($y != 0) {
+					result = a($x/$y)
+					if ($x < 0) {
+						result += pi
+					}
+				}
+				result 
+END
+)
+		echo $result
+	}
+	
 	function notImplemented() {
 		echo "Not implemented"
 	}
@@ -73,6 +109,12 @@ function Math() {
 		;;
 		"fibFun")
 			fibonacciRec $1
+		;;
+		"geoDist")
+			geoDistance $@
+		;;
+		"atan2")
+			atan2 $1 $2
 		;;
 		*)
 			notImplemented
