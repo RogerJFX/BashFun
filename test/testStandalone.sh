@@ -3,7 +3,7 @@
 export KILL_ON_FAILURE=true
 
 . ./Assertions.sh
-. ./Math.sh
+. ../Math.sh
 
 Assertions assertEquals 1 1 "one should equal one"
 
