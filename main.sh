@@ -3,6 +3,7 @@
 # Next to come: a testing framework. *lol* - for the bash. I think, I will do that stuff ...
 
 . ./Math.sh
+. ./Assertions.sh
 
 # Just some "object" to hold two values. Lazy echo.
 function coords() {
@@ -25,5 +26,7 @@ coords1=$(coords 50.111511 8.680506) # Frankfurt
 coords2=$(coords 49.45052 11.08048) # Nuremberg
 
 time echo $(Math geoDist $coords1 $coords2)
+
+echo $(Assertions assertTrue 1)
 
 echo $(Math atan2 -12 0)
