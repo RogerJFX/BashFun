@@ -2,7 +2,7 @@
 
 export KILL_ON_FAILURE=false
 
-. ./Assertions.sh
+. ../lib/Assertions.sh
 . ./testSimple.sh
 . ./testMath.sh
 

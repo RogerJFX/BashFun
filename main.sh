@@ -2,7 +2,7 @@
 
 # Next to come: a testing framework. *lol* - for the bash. I think, I will do that stuff ...
 
-. ./Math.sh
+. ./lib/Math.sh
 
 # Just some "object" to hold two values. Lazy echo.
 function coords() {

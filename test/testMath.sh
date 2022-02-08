@@ -2,7 +2,7 @@
 
 # Only works inside a suite.
 
-. ../Math.sh
+. ../lib/Math.sh
 
 function testFib() {
 	Assertions assertEquals 15 $(Math fib 8) "Fibonacci should (not) lie"
