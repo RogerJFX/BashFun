@@ -3,21 +3,18 @@
 # Only works inside a suite.
 
 . ../lib/Math.sh
-
-function atan2Testdata() {
-	echo "$1 $2 $3"
-}
+. ../lib/Tuples.sh
 
 declare -a atan2Arr=(
-                "$(atan2Testdata 1 2 0.4636476090008061)"
-                "$(atan2Testdata 100000 -22 1.5710163267913473)"
-                "$(atan2Testdata -1 2 -0.4636476090008061)"
-                "$(atan2Testdata -10 2 -1.373400766945016)"
-                "$(atan2Testdata -10 -222 -3.096578037815266)"
-                "$(atan2Testdata -10 -2222222 -3.141588153589343)"
-                "$(atan2Testdata -10 -22 -2.714965160462917)"
-                "$(atan2Testdata 1 -2 2.677945044588987)"
-                "$(atan2Testdata 0 0 0)"
+                "$(Tuple 1 2 0.4636476090008061)"
+                "$(Tuple 100000 -22 1.5710163267913473)"
+                "$(Tuple -1 2 -0.4636476090008061)"
+                "$(Tuple -10 2 -1.373400766945016)"
+                "$(Tuple -10 -222 -3.096578037815266)"
+                "$(Tuple -10 -2222222 -3.141588153589343)"
+                "$(Tuple -10 -22 -2.714965160462917)"
+                "$(Tuple 1 -2 2.677945044588987)"
+                "$(Tuple 0 0 0)"
                 )
                 
 function testFib() {

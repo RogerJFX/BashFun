@@ -29,18 +29,6 @@ function Math() {
 		echo $(calc $term)
 	}
 	
-	# a bit slow then... - but fun
-	function fibonacciRec() {
-		local num=$1
-		if [[ $num = 1 || $num = 2 ]] ; then
-			echo 1
-		else 
-			a=$(($num-1))
-			b=$(($num-2))
-			echo $(calc "$(fibonacciRec $a) + $(fibonacciRec $b)")
-		fi
-	}
-	
 	# faster :O
 	function fibonacci() {
 		local low=0
@@ -107,9 +95,6 @@ END
 		;;
 		"fib")
 			fibonacci $1
-		;;
-		"fibFun")
-			fibonacciRec $1
 		;;
 		"geoDist")
 			geoDistance $@
