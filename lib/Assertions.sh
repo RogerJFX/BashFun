@@ -40,7 +40,7 @@ function Assertions() {
 	
 	function summary() {
 		printf "${NORMAL}${NC}" >&1
-		echo "--------------------------"
+		echo "############################"
 		echo "Tests passed: $testsPassed"
 		echo "Tests failed: $testsFailed"
 	}
@@ -61,11 +61,43 @@ function Assertions() {
 	}
 	
 	function assertEquals() {
-		if [[ $1 == $2 ]] ; then
+		if [ $1 == $2 ] ; then
 			passed "$3"
 		else
 			failed "$3. Expected $1, but was $2"
 		fi
+	}
+	
+	# firstNum, secondNum, tolerance(optional. Consider floating points), message
+	function assertNumberEquals() {
+		rgx='^[0-9.]+$'
+		tolerance=0
+		message=$3
+		if [[ $4 || $3 =~ $rgx ]] ; then 
+			tolerance=$3
+			message=$4
+		fi
+		res=$(echo "$2-($1)<$tolerance && $1-($2)<$tolerance" | bc -l)
+		if [[ $res == 1 ]] ; then
+			passed "$message"
+		else
+			failed "$message. Diff between expected $1 and actual $2 is greater than $tolerance."
+		fi
+	}
+	
+	# Do all tests inside a function. Args: the function, a message.
+	function doTests() {
+		printf "${NORMAL}${NC}" >&1
+		echo ">>> Doing tests '$2' >>>"
+		local currPassed currFailed
+		local yetFailed=$testsFailed
+		local yetPassed=$testsPassed
+		$1
+		printf "${NORMAL}${NC}" >&1
+		currPassed=$(($testsPassed - $yetPassed))
+		currFailed=$(($testsFailed - $yetFailed))
+		echo "<<< Passed: $currPassed, Failed: $currFailed <<<"
+		echo
 	}
 	
 	op=$1; shift
@@ -76,6 +108,12 @@ function Assertions() {
 		;;
 		"assertEquals")
 			assertEquals "$@"
+		;;
+		"assertNumberEquals")
+			assertNumberEquals "$@"
+		;;
+		"doTests")
+			doTests "$@"
 		;;
 		"summary")
 			summary

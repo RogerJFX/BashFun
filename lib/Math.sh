@@ -71,16 +71,17 @@ function Math() {
 			bc -l <<END
 				result = 0 /* if $x == 0 AND $y == 0 */
 				pi = (4*a(1/5) - a(1/239))*4
-				if ($y == 0) {
-					if($x != 0) {
-						result = pi / 2
-					}
+				if ($y == 0 && $x != 0) {
+					result = pi / 2
 				}
 				if ($y != 0) {
 					result = a($x/$y)
-					if ($x < 0) {
+					if($y < 0) {
 						result += pi
 					}
+				}
+				if (result > pi) {
+						result -= (2 * pi)
 				}
 				result 
 END
