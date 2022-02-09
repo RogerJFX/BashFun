@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export KILL_ON_FAILURE=true
+export KILL_ON_FAILURE=false
 
 . ../lib/Assertions.sh
 . ../lib/Math.sh

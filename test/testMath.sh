@@ -4,7 +4,6 @@
 
 . ../lib/Math.sh
 
-
 function atan2Testdata() {
 	echo "$1 $2 $3"
 }

@@ -2,8 +2,8 @@
 
 ## BashFun
 
-Just having some fun with the bash. 
+Just having some fun with the bash. So far it's lots of fun using bc which is really fast, by the way.
 
-So far it's lots of fun using bc.
+Running on pure shell with some limitations as well as on bash. Not running with zsh, though.
 
-Calculating the fibonacci of 100.000 takes about 10 minutes on some weak computer. My mom will be very proud. :P
+Started with some tiny testing tool, then accidentally discovered BATS, which regrettably is not maintained anymore.
