@@ -8,6 +8,7 @@ function Tuple() {
 
 # TupleValue. Note: using this is a bit expensive, though someway cleaner.
 # Consider having something like this:
+#   local c=0
 #	for token in $tuple; do
 #		if [ $c -eq 0 ]; then
 #			x=$token
