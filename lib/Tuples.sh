@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Hm. Only one tuple so far. Enough for now.
+# Hm. Only one tuple so far. Enough for now
+# Note: the echo is lazy (like me, by the way)
 function Tuple() {
 	echo "$@"
 }
