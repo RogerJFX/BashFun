@@ -25,18 +25,10 @@ function testFib() {
 function testAtan2() {
 	local expected x y c
 	local tolerance=0.00000000001
-	for i in "${atan2Arr[@]}" ; do
-		c=0
-		for token in $i; do
-			if [ $c -eq 0 ]; then
-				x=$token
-			elif [ $c -eq 1 ]; then
-				y=$token
-			elif [ $c -eq 2 ]; then
-				expected=$token
-			fi
-			c=$((c+1))
-		done
+	for tuple in "${atan2Arr[@]}" ; do
+		x=$(tValAt 1 $tuple)
+		y=$(tValAt 2 $tuple)
+		expected=$(tValAt 3 $tuple)
 		Assertions assertNumberEquals $expected $(Math atan2 $x $y) $tolerance "atan2 for $x, $y"
 	done
 }
