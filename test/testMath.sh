@@ -16,14 +16,14 @@ declare -a atan2Arr=(
                 "$(Tuple 1 -2 2.677945044588987)"
                 "$(Tuple 0 0 0)"
                 )
-                
+          
 function testFib() {
 	Assertions assertEquals 21 $(Math fib 8) "Fibonacci should not lie for 8"
 	Assertions assertEquals 55 $(Math fib 10) "Fibonacci should not lie for 10"
 }
 
 function testAtan2() {
-	local expected x y c
+	local expected x y
 	local tolerance=0.00000000001
 	for tuple in "${atan2Arr[@]}" ; do
 		x=$(tValAt 1 $tuple)
@@ -33,5 +33,40 @@ function testAtan2() {
 	done
 }
 
-Assertions doTests testFib "Test fibonacci"
-Assertions doTests testAtan2 "Test atan2"
+function testAtan2Slow() {
+	local expected x y
+	local tolerance=0.00000000001
+	for tuple in "${atan2Arr[@]}" ; do
+		x=$(tSubset 1 $tuple)
+		y=$(tSubset 2 $tuple)
+		expected=$(tSubset 3 $tuple)
+		Assertions assertNumberEquals $expected $(Math atan2 $x $y) $tolerance "atan2 for $x, $y"
+	done
+}
+
+function testAtan2Array() {
+	local arr
+	local tolerance=0.00000000001
+	for tuple in "${atan2Arr[@]}" ; do
+		toArray arr $tuple
+		Assertions assertNumberEquals ${arr[2]} $(Math atan2 ${arr[0]} ${arr[1]}) $tolerance "atan2 for ${arr[0]}, ${arr[1]}"
+	done
+}
+
+function testAtan2Subset() {
+	local indices="3,1"
+	local reOrdered
+	for tuple in "${atan2Arr[@]}" ; do
+		reOrdered=$(tSubset $indices $tuple)
+		Assertions assertEquals $(tValAt 3 $tuple) $(tValAt 1 $reOrdered) "reodering tuple, val 3 -> 1"
+		Assertions assertEquals $(tValAt 1 $tuple) $(tValAt 2 $reOrdered) "reodering tuple, val 1 -> 2"
+	done
+}
+
+#Assertions doTests testFib "Test fibonacci"
+time Assertions doTests testAtan2 "Test atan2"
+time Assertions doTests testAtan2Slow "Test atan2, slower way"
+time Assertions doTests testAtan2Array "Test atan2, array way"
+time Assertions doTests testAtan2Subset "Test mapping Tuples to others."
+
+
