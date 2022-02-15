@@ -21,6 +21,11 @@ function Math() {
 		echo $(calc "$(sum $@)/$#")
 	}
 	
+	# just strings, no need for math operations
+	function abs() {
+		echo $1 | sed "s/^-//"
+	}
+	
 	function factorial() {
 		local term="1"
 		for ((i = 2; i <= $1; i++)) ; do
@@ -29,7 +34,6 @@ function Math() {
 		echo $(calc $term)
 	}
 	
-	# faster :O
 	function fibonacci() {
 		local low=0
 		local high=1
@@ -39,6 +43,7 @@ function Math() {
 		done
 		echo $(calc $high)
 	}
+
 	
 	function geoDistance() {
 		local pi180=0.01745329251994329576
@@ -89,6 +94,9 @@ END
 		;;
 		"avg")
 			average $@
+		;;
+		"abs")
+			abs $1
 		;;
 		"fact")
 			factorial $1

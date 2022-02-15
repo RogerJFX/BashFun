@@ -22,6 +22,11 @@ function testFib() {
 	Assertions assertEquals 55 $(Math fib 10) "Fibonacci should not lie for 10"
 }
 
+function testAbs() {
+	Assertions assertEquals 21.001 $(Math abs -21.001) "Math abs of -21.001"
+	Assertions assertEquals 21.001 $(Math abs 21.001) "Math abs of 21.001"
+}
+
 function doAtan2Bulk() {
 	for tuple in "${atan2Arr[@]}" ; do
 		$1
@@ -74,6 +79,7 @@ function testAtan2Subset() {
 }
 
 Assertions doTests testFib "Test fibonacci"
+Assertions doTests testAbs "Test Math abs"
 time Assertions doTests testAtan2 "Test atan2"
 time Assertions doTests testAtan2Slow "Test atan2, slower way"
 time Assertions doTests testAtan2Array "Test atan2, array way"

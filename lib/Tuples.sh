@@ -12,7 +12,7 @@ function Tuple() {
 # This would create a new Tuple with only 3 values of myTuple with passed indexes.
 function tSubset() {
 	local pos="$1"; shift
-	printPos=$(echo $pos | sed "s/^/$/; s/,/,$/g")
+	local printPos=$(echo $pos | sed "s/^/$/; s/,/,$/g")
 	echo $@ | awk '{print '$printPos'}'
 }
 
