@@ -33,6 +33,6 @@ if $passed; then
 	echo "Everything is right. Continue your excellent work"
 	exit 0
 else 
-	echo "Something went wrong. Have a look at result.txt"
+	echo "Something went wrong. Have a look at $logFile"
 	exit 1
 fi
