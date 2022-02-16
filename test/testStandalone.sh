@@ -1,9 +1,12 @@
 #!/bin/bash
 
 export KILL_ON_FAILURE=false
+# Not particular reasonable...
+#export UNIT_TEST_BEHAVIOUR=true
 
-. ../lib/Assertions.sh
-. ../lib/Math.sh
+dir=$(dirname "$0")
+. "$dir/../lib/Assertions.sh"
+. "$dir/../lib/Math.sh"
 
 Assertions assertEquals 1 1 "one should equal one"
 

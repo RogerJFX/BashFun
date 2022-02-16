@@ -2,8 +2,9 @@
 
 # Only works inside a suite.
 
-. ../lib/Math.sh
-. ../lib/Tuples.sh
+dir=$(dirname "$0")
+. "$dir/../lib/Math.sh"
+. "$dir/../lib/Tuples.sh"
 
 declare -a atan2Arr=(
                 "$(Tuple 1 2 0.4636476090008061)"
@@ -78,11 +79,11 @@ function testAtan2Subset() {
 	doAtan2Bulk doTest
 }
 
-Assertions doTests testFib "Test fibonacci"
-Assertions doTests testAbs "Test Math abs"
-time Assertions doTests testAtan2 "Test atan2"
-time Assertions doTests testAtan2Slow "Test atan2, slower way"
-time Assertions doTests testAtan2Array "Test atan2, array way"
-time Assertions doTests testAtan2Subset "Test mapping Tuples to others."
+Assertions testUnit testFib "Test fibonacci"
+Assertions testUnit testAbs "Test Math abs"
+Assertions testUnit testAtan2 "Test atan2"
+Assertions testUnit testAtan2Slow "Test atan2, slower way"
+Assertions testUnit testAtan2Array "Test atan2, array way"
+Assertions testUnit testAtan2Subset "Test mapping Tuples to others."
 
 

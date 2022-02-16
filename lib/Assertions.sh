@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Mind you can change the test behavior by exporting some vars.
+# For unit test behavior: export UNIT_TEST_BEHAVIOUR=true
+# Kill complete test after first failure: export KILL_ON_FAILURE=true
+
 export TOP_PID=$$
 trap "exit 1" TERM
 
@@ -10,12 +14,13 @@ RED='\033[1;31m'
 BOLD=$(tput bold)
 
 # only works using no subshells. So no "$(func args)", please.
-testsPassed=0
-testsFailed=0
+unitsPassed=0
+unitsFailed=0
+assertionFailed=false
 
 function Assertions() {
 
-	# not exit... - subshells would work as well.
+	# not exit... (and "set -e") - subshells would work as well.
 	function doKill() {
 		printf "${BOLD}${RED}" >&2
 		echo "!!! Killing on failure '$1'!!!" >&2
@@ -24,25 +29,30 @@ function Assertions() {
 	}
 	
 	function failed() {
-		testsFailed=$(($testsFailed + 1))
+		assertionFailed=true
 		printf "${BOLD}${RED}" >&2
-		echo "Failed: '$1'" >&2
+		echo "Assertion failed: '$1'" >&2
 		if [[ $KILL_ON_FAILURE == true ]] ; then
 			doKill "$1"
 		fi
 	}
 	
 	function passed() {
-		testsPassed=$(($testsPassed + 1))
-		printf "${NORMAL}${GREEN}" >&2
-		echo "Passed: '$1'" >&2
+		if [[ $UNIT_TEST_BEHAVIOUR != true ]] ; then
+			printf "${NORMAL}${GREEN}" >&2
+			echo "Assertion passed: '$1'" >&2 
+		fi
 	}
 	
 	function summary() {
 		printf "${NORMAL}${NC}" >&1
 		echo "############################"
-		echo "Tests passed: $testsPassed"
-		echo "Tests failed: $testsFailed"
+		if [[ $UNIT_TEST_BEHAVIOUR != true && $unitsPassed == 0 && $unitsPassed == 0 ]] ; then
+			echo "No unit test behaviour at all"
+		else
+			echo "Units passed: $unitsPassed"
+			echo "Units failed: $unitsFailed"
+		fi
 	}
 	
 	function assertTrue() {
@@ -85,18 +95,31 @@ function Assertions() {
 		fi
 	}
 	
-	# Do all tests inside a function. Args: the function, a message.
-	function doTests() {
+	function checkUnit() {
+		if [[ $UNIT_TEST_BEHAVIOUR == true && $assertionFailed == true ]] ; then
+			return 0
+		else 
+			"$@"
+		fi
+	}
+	
+	# Do all tests inside a function (a unit). Args: the function, a message.
+	function testUnit() {
+		local result
+		assertionFailed=false
 		printf "${NORMAL}${NC}" >&1
-		echo ">>> Doing tests '$2' >>>"
-		local currPassed currFailed
-		local yetFailed=$testsFailed
-		local yetPassed=$testsPassed
-		$1
-		printf "${NORMAL}${NC}" >&1
-		currPassed=$(($testsPassed - $yetPassed))
-		currFailed=$(($testsFailed - $yetFailed))
-		echo "<<< Passed: $currPassed, Failed: $currFailed <<<"
+		echo ">>> Doing tests $1 :: '$2' >>>"
+		"$@"
+		if [[ $assertionFailed == true ]] ; then
+			unitsFailed=$(($unitsFailed + 1))
+			result="FAILED"
+			printf "${BOLD}${RED}"
+		else 
+			unitsPassed=$(($unitsPassed + 1))
+			result="PASSED"
+			printf "${NORMAL}${GREEN}"
+		fi
+		echo "<<< Unit $1 $result <<<"
 		echo
 	}
 	
@@ -104,16 +127,16 @@ function Assertions() {
 	
 	case $op in
 		"assertTrue")
-			assertTrue "$@"
+			checkUnit assertTrue "$@"
 		;;
 		"assertEquals")
-			assertEquals "$@"
+			checkUnit assertEquals "$@"
 		;;
 		"assertNumberEquals")
-			assertNumberEquals "$@"
+			checkUnit assertNumberEquals "$@"
 		;;
-		"doTests")
-			doTests "$@"
+		"testUnit")
+			testUnit "$@"
 		;;
 		"summary")
 			summary

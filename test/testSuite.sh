@@ -1,10 +1,11 @@
 #!/bin/bash
 
 export KILL_ON_FAILURE=false
+export UNIT_TEST_BEHAVIOUR=false
 
-. ../lib/Assertions.sh
-. ./testSimple.sh
-. ./testMath.sh
-
+dir=$(dirname "$0")
+. "$dir/../lib/Assertions.sh"
+. "$dir/testSimple.sh"
+. "$dir/testMath.sh"
 
 Assertions summary

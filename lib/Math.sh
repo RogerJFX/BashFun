@@ -44,7 +44,6 @@ function Math() {
 		echo $(calc $high)
 	}
 
-	
 	function geoDistance() {
 		local pi180=0.01745329251994329576
 		local R=6371
