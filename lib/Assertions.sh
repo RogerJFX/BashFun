@@ -30,8 +30,8 @@ function Assertions() {
 	
 	function failed() {
 		assertionFailed=true
-		printf "${BOLD}${RED}" >&2
-		echo "Assertion failed: '$1'" >&2
+		printf "${BOLD}${RED}"
+		printf "Assertion failed: '$1'\n"
 		if [[ $KILL_ON_FAILURE == true ]] ; then
 			doKill "$1"
 		fi
@@ -39,8 +39,8 @@ function Assertions() {
 	
 	function passed() {
 		if [[ $UNIT_TEST_BEHAVIOUR != true ]] ; then
-			printf "${NORMAL}${GREEN}" >&2
-			echo "Assertion passed: '$1'" >&2 
+			printf "${NORMAL}${GREEN}"
+			echo "Assertion passed: '$1'"
 		fi
 	}
 	
