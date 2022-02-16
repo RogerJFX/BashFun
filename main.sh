@@ -2,11 +2,19 @@
 
 passed=true
 
-echo "Test report, date: $(date '+%Y-%m-%d %H:%M:%S')" > result.txt
+logFile="testResults.log"
+
+# declare all tests here
+declare -a tests=(
+	./test/testSuite.sh
+	./test/testStandalone.sh
+)
+
+echo "Test report, date: $(date '+%Y-%m-%d %H:%M:%S')" > $logFile
 
 function checkFailures() {
 	while IFS= read -r line; do
-		echo $line >> result.txt
+		echo $line >> $logFile
 		echo $line >&2
 		if [[ $line == *"Assertion failed"* ]] ; then 
 			passed=false
@@ -14,8 +22,9 @@ function checkFailures() {
 	done < <($1)
 }
 
-checkFailures ./test/testSuite.sh
-checkFailures ./test/testStandalone.sh
+for test in "${tests[@]}"; do
+	checkFailures $test
+done
 
 echo
 echo "---"
