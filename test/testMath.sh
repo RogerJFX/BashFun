@@ -17,7 +17,11 @@ declare -a atan2Arr=(
                 "$(Tuple 1 -2 2.677945044588987)"
                 "$(Tuple 0 0 0)"
                 )
-          
+
+function testGeoDistance() {
+	Assertions assertNumberEquals 187 $(Math geoDist $(Tuple 50.111511 8.680506) $(Tuple 49.45052 11.08048)) 1 "Distance F <-> N in km"
+}
+    
 function testFib() {
 	Assertions assertEquals 21 $(Math fib 8) "Fibonacci should not lie for 8"
 	Assertions assertEquals 55 $(Math fib 10) "Fibonacci should not lie for 10"
@@ -26,6 +30,12 @@ function testFib() {
 function testAbs() {
 	Assertions assertEquals 21.001 $(Math abs -21.001) "Math abs of -21.001"
 	Assertions assertEquals 21.001 $(Math abs 21.001) "Math abs of 21.001"
+}
+
+function testCommonMathBC() {
+	Assertions assertEquals 912.6 $(Math sum 11.2 1.3 900.1) "Math sum"
+	Assertions assertNumberEquals 2.2 $(Math avg 1.1 2.2 3.3) 0.000000000000000001 "Math avg"
+	Assertions assertEquals 263130836933693530167218012160000000 $(Math fact 32) "Math fact"
 }
 
 function doAtan2Bulk() {
@@ -78,7 +88,8 @@ function testAtan2Subset() {
 	}
 	doAtan2Bulk doTest
 }
-
+Assertions testUnit testCommonMathBC "Some common bc ops"
+Assertions testUnit testGeoDistance "Test distance in km"
 Assertions testUnit testFib "Test fibonacci"
 Assertions testUnit testAbs "Test Math abs"
 Assertions testUnit testAtan2 "Test atan2"
