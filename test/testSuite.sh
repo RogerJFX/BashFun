@@ -7,5 +7,6 @@ dir=$(dirname "$0")
 . "$dir/../lib/Assertions.sh"
 . "$dir/testSimple.sh"
 . "$dir/testMath.sh"
+. "$dir/testJava.sh"
 
 Assertions summary

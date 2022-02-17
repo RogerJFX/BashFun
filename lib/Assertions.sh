@@ -4,6 +4,9 @@
 # For unit test behavior: export UNIT_TEST_BEHAVIOUR=true
 # Kill complete test after first failure: export KILL_ON_FAILURE=true
 
+dir=$(dirname "$0")
+. "$dir/../lib/Tuples.sh"
+
 export TOP_PID=$$
 trap "exit 1" TERM
 
@@ -17,6 +20,7 @@ BOLD=$(tput bold)
 unitsPassed=0
 unitsFailed=0
 assertionFailed=false
+failedTests=$(Tuple)
 
 function Assertions() {
 
@@ -45,6 +49,7 @@ function Assertions() {
 	}
 	
 	function summary() {
+		local failedTestsArr
 		printf "${NORMAL}${NC}" >&1
 		echo "############################"
 		if [[ $UNIT_TEST_BEHAVIOUR != true && $unitsPassed == 0 && $unitsPassed == 0 ]] ; then
@@ -52,7 +57,15 @@ function Assertions() {
 		else
 			echo "Units passed: $unitsPassed"
 			echo "Units failed: $unitsFailed"
+			if [[ $unitsFailed != 0 ]]; then
+				toArray failedTestsArr $failedTests
+				echo "Failed units: "
+				for failedUnit in "${failedTestsArr[@]}" ; do
+					echo "-> $failedUnit"
+				done
+			fi
 		fi
+		echo "############################"
 	}
 	
 	function assertTrue() {
@@ -112,6 +125,7 @@ function Assertions() {
 		"$@"
 		if [[ $assertionFailed == true ]] ; then
 			unitsFailed=$(($unitsFailed + 1))
+			failedTests=$(Tuple $failedTests $1)
 			result="FAILED"
 			printf "${BOLD}${RED}"
 		else 

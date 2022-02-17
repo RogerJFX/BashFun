@@ -2,7 +2,12 @@
 
 passed=true
 
-logFile="testResults.log"
+now=$(date '+%Y-%m-%d %H:%M:%S')
+
+# same date (not another call), mind the nanos. :D
+now4File=$(echo $now | sed "s/:/-/g; s/ /_/g")
+
+logFile="testResults_$now4File.log"
 
 # declare all tests here
 declare -a tests=(
@@ -10,11 +15,16 @@ declare -a tests=(
 	./test/testStandalone.sh
 )
 
-echo "Test report, date: $(date '+%Y-%m-%d %H:%M:%S')" > $logFile
+echo "Test report, date: $now" > $logFile
+
+# Free line from bash formatting chars for writing to a file.
+function trimLine() {
+	echo "$1" | sed -E "s/^[\x1bBm0123\(\[;]*([<>#A-Z])/\1/g"
+}
 
 function checkFailures() {
 	while IFS= read -r line; do
-		echo $line >> $logFile
+		echo $(trimLine "$line") >> $logFile
 		echo $line >&2
 		if [[ $line == *"Assertion failed"* ]] ; then 
 			passed=false

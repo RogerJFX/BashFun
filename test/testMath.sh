@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Only works inside a suite.
+# Only works inside a suite. Assertions.sh is missing here.
 
 dir=$(dirname "$0")
 . "$dir/../lib/Math.sh"
@@ -88,6 +88,7 @@ function testAtan2Subset() {
 	}
 	doAtan2Bulk doTest
 }
+
 Assertions testUnit testCommonMathBC "Some common bc ops"
 Assertions testUnit testGeoDistance "Test distance in km"
 Assertions testUnit testFib "Test fibonacci"
