@@ -29,7 +29,7 @@ function checkFailures() {
 		if [[ $line == *"Assertion failed"* ]] ; then 
 			passed=false
 		fi
-	done < <($1)
+	done < <($1 2>&1)
 }
 
 for test in "${tests[@]}"; do

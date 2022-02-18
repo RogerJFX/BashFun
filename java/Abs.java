@@ -7,7 +7,7 @@ public class Abs {
 	
 	public static void main(String[] args) {
 		if (args.length != 1) {
-			System.exit(1);
+			throw new IllegalArgumentException("Only one argument please.");
 		}
 		if ("minInteger".equals(args[0])) {
 			out.println(MIN_INTEGER);
